@@ -1,7 +1,144 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useRef } from 'react';
 import './App.css';
 
 function App() {
+	const [horizontalAlignPosition, setHorizontalAlignPosition] = useState<
+		number | undefined
+	>();
+	const [verticalAlignPosition, setVerticalAlignPosition] = useState<
+		number | undefined
+	>();
+
+	const squareNodeRef = useRef<HTMLInputElement>(null);
+	const circleNodeRef = useRef<HTMLInputElement>(null);
+	const rectangleNodeRef = useRef<HTMLInputElement>(null);
+	const ellipseNodeRef = useRef<HTMLInputElement>(null);
+	const canvasRef = useRef<HTMLInputElement>(null);
+	const canvasRect = canvasRef.current?.getBoundingClientRect();
+
+	const checkHorizontalAlignToOtherNodes = () => {
+		const squareNodeRect = squareNodeRef.current?.getBoundingClientRect();
+		const circleNodeRect = circleNodeRef.current?.getBoundingClientRect();
+		const rectangleNodeRect = rectangleNodeRef.current?.getBoundingClientRect();
+		const ellipseNodeRect = ellipseNodeRef.current?.getBoundingClientRect();
+
+		switch (true) {
+			case squareNodeRect?.left === circleNodeRect?.left:
+			case squareNodeRect?.left === rectangleNodeRect?.left:
+			case squareNodeRect?.left === ellipseNodeRect?.left:
+				setHorizontalAlignPosition(squareNodeRect?.left);
+				break;
+			case squareNodeRect?.left === circleNodeRect?.right:
+			case squareNodeRect?.left === rectangleNodeRect?.right:
+			case squareNodeRect?.left === ellipseNodeRect?.right:
+				setHorizontalAlignPosition(squareNodeRect?.left);
+				break;
+			case squareNodeRect?.right === circleNodeRect?.left:
+			case squareNodeRect?.right === rectangleNodeRect?.left:
+			case squareNodeRect?.right === ellipseNodeRect?.left:
+				setHorizontalAlignPosition(squareNodeRect?.right);
+				break;
+			case squareNodeRect?.right === circleNodeRect?.right:
+			case squareNodeRect?.right === rectangleNodeRect?.right:
+			case squareNodeRect?.right === ellipseNodeRect?.right:
+				setHorizontalAlignPosition(squareNodeRect?.right);
+				break;
+			case circleNodeRect?.left === rectangleNodeRect?.left:
+			case circleNodeRect?.left === ellipseNodeRect?.left:
+				setHorizontalAlignPosition(circleNodeRect?.left);
+				break;
+			case circleNodeRect?.left === rectangleNodeRect?.right:
+			case circleNodeRect?.left === ellipseNodeRect?.right:
+				setHorizontalAlignPosition(circleNodeRect?.left);
+				break;
+			case circleNodeRect?.right === rectangleNodeRect?.left:
+			case circleNodeRect?.right === ellipseNodeRect?.left:
+				setHorizontalAlignPosition(circleNodeRect?.right);
+				break;
+			case circleNodeRect?.right === rectangleNodeRect?.right:
+			case circleNodeRect?.right === ellipseNodeRect?.right:
+				setHorizontalAlignPosition(circleNodeRect?.right);
+				break;
+			case rectangleNodeRect?.left === ellipseNodeRect?.left:
+				setHorizontalAlignPosition(rectangleNodeRect?.left);
+				break;
+			case rectangleNodeRect?.left === ellipseNodeRect?.right:
+				setHorizontalAlignPosition(rectangleNodeRect?.left);
+				break;
+			case rectangleNodeRect?.right === ellipseNodeRect?.left:
+				setHorizontalAlignPosition(rectangleNodeRect?.right);
+				break;
+			case rectangleNodeRect?.right === ellipseNodeRect?.right:
+				setHorizontalAlignPosition(rectangleNodeRect?.right);
+				break;
+			default:
+				setHorizontalAlignPosition(undefined);
+				break;
+		}
+	};
+
+	const checkVerticalAlignToOtherNodes = () => {
+		const squareNodeRect = squareNodeRef.current?.getBoundingClientRect();
+		const circleNodeRect = circleNodeRef.current?.getBoundingClientRect();
+		const rectangleNodeRect = rectangleNodeRef.current?.getBoundingClientRect();
+		const ellipseNodeRect = ellipseNodeRef.current?.getBoundingClientRect();
+
+		switch (true) {
+			case squareNodeRect?.top === circleNodeRect?.top:
+			case squareNodeRect?.top === rectangleNodeRect?.top:
+			case squareNodeRect?.top === ellipseNodeRect?.top:
+				setVerticalAlignPosition(squareNodeRect?.top);
+				break;
+			case squareNodeRect?.top === circleNodeRect?.bottom:
+			case squareNodeRect?.top === rectangleNodeRect?.bottom:
+			case squareNodeRect?.top === ellipseNodeRect?.bottom:
+				setVerticalAlignPosition(squareNodeRect?.top);
+				break;
+			case squareNodeRect?.bottom === circleNodeRect?.top:
+			case squareNodeRect?.bottom === rectangleNodeRect?.top:
+			case squareNodeRect?.bottom === ellipseNodeRect?.top:
+				console.log(squareNodeRect?.bottom);
+				setVerticalAlignPosition(squareNodeRect?.bottom);
+				break;
+			case squareNodeRect?.bottom === circleNodeRect?.bottom:
+			case squareNodeRect?.bottom === rectangleNodeRect?.bottom:
+			case squareNodeRect?.bottom === ellipseNodeRect?.bottom:
+				setVerticalAlignPosition(squareNodeRect?.bottom);
+				break;
+			case circleNodeRect?.top === rectangleNodeRect?.top:
+			case circleNodeRect?.top === ellipseNodeRect?.top:
+				setVerticalAlignPosition(circleNodeRect?.top);
+				break;
+			case circleNodeRect?.top === rectangleNodeRect?.bottom:
+			case circleNodeRect?.top === ellipseNodeRect?.bottom:
+				setVerticalAlignPosition(circleNodeRect?.top);
+				break;
+			case circleNodeRect?.bottom === rectangleNodeRect?.top:
+			case circleNodeRect?.bottom === ellipseNodeRect?.top:
+				setVerticalAlignPosition(circleNodeRect?.bottom);
+				break;
+			case circleNodeRect?.bottom === rectangleNodeRect?.bottom:
+			case circleNodeRect?.bottom === ellipseNodeRect?.bottom:
+				setVerticalAlignPosition(circleNodeRect?.bottom);
+				break;
+			case rectangleNodeRect?.top === ellipseNodeRect?.top:
+				setVerticalAlignPosition(rectangleNodeRect?.top);
+				break;
+			case rectangleNodeRect?.top === ellipseNodeRect?.bottom:
+				setVerticalAlignPosition(rectangleNodeRect?.top);
+				break;
+			case rectangleNodeRect?.bottom === ellipseNodeRect?.top:
+				setVerticalAlignPosition(rectangleNodeRect?.bottom);
+				break;
+			case rectangleNodeRect?.bottom === ellipseNodeRect?.bottom:
+				setVerticalAlignPosition(rectangleNodeRect?.bottom);
+				break;
+			default:
+				setVerticalAlignPosition(undefined);
+				break;
+		}
+	};
+
 	const [squareState, setSquareState] = useState({
 		isDragging: false,
 		position: { x: 20, y: 50 },
@@ -25,6 +162,8 @@ function App() {
 
 	const handleSquareDrag = useCallback(
 		({ clientX, clientY }: { clientX: number; clientY: number }) => {
+			checkHorizontalAlignToOtherNodes();
+			checkVerticalAlignToOtherNodes();
 			const position = {
 				x: clientX - squareState.startDraggingPoint.x + squareState.position.x,
 				y: clientY - squareState.startDraggingPoint.y + squareState.position.y,
@@ -65,6 +204,8 @@ function App() {
 
 	const handleCircleDrag = useCallback(
 		({ clientX, clientY }: { clientX: number; clientY: number }) => {
+			checkHorizontalAlignToOtherNodes();
+			checkVerticalAlignToOtherNodes();
 			const position = {
 				x: clientX - circleState.startDraggingPoint.x + circleState.position.x,
 				y: clientY - circleState.startDraggingPoint.y + circleState.position.y,
@@ -105,6 +246,8 @@ function App() {
 
 	const handleRectangleDrag = useCallback(
 		({ clientX, clientY }: { clientX: number; clientY: number }) => {
+			checkHorizontalAlignToOtherNodes();
+			checkVerticalAlignToOtherNodes();
 			const position = {
 				x:
 					clientX -
@@ -151,6 +294,8 @@ function App() {
 
 	const handleEllipseDrag = useCallback(
 		({ clientX, clientY }: { clientX: number; clientY: number }) => {
+			checkHorizontalAlignToOtherNodes();
+			checkVerticalAlignToOtherNodes();
 			const position = {
 				x: clientX - ellipseState.startDraggingPoint.x + ellipseState.position.x,
 				y: clientY - ellipseState.startDraggingPoint.y + ellipseState.position.y,
@@ -170,8 +315,9 @@ function App() {
 
 	return (
 		<div className='App'>
-			<div className='kanvas'>
+			<div ref={canvasRef} className='canvas'>
 				<div
+					ref={squareNodeRef}
 					draggable={true}
 					className='square'
 					style={{
@@ -184,6 +330,7 @@ function App() {
 					onDragEnd={handleSquareDragEnd}
 				/>
 				<div
+					ref={circleNodeRef}
 					draggable={true}
 					className='circle'
 					style={{
@@ -196,6 +343,7 @@ function App() {
 					onDragEnd={handleCirleDragEnd}
 				/>
 				<div
+					ref={rectangleNodeRef}
 					draggable={true}
 					className='rectangle'
 					style={{
@@ -208,6 +356,7 @@ function App() {
 					onDragEnd={handleRectangleDragEnd}
 				/>
 				<div
+					ref={ellipseNodeRef}
 					draggable={true}
 					className='ellipse'
 					style={{
@@ -218,6 +367,24 @@ function App() {
 					onDragStart={handleEllipseDragStart}
 					onDrag={handleEllipseDrag}
 					onDragEnd={handleEllipseDragEnd}
+				/>
+				<div
+					className='verticalLine'
+					style={{
+						left: horizontalAlignPosition
+							? horizontalAlignPosition - canvasRect?.left!
+							: horizontalAlignPosition,
+						top: 0,
+					}}
+				/>
+				<div
+					className='horozontalLine'
+					style={{
+						left: 0,
+						top: verticalAlignPosition
+							? verticalAlignPosition - canvasRect?.top!
+							: verticalAlignPosition,
+					}}
 				/>
 			</div>
 		</div>
