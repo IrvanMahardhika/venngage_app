@@ -17,5 +17,28 @@
 	position: absolute;
 	width: 100px;
 	height: 100px;
-	background-color: purple;
+	background-color: #6495ed;
+}
+
+.circle {
+	position: absolute;
+	width: 100px;
+	height: 100px;
+	border-radius: 50px;
+	background-color: #6495ed;
+}
+
+.rectangle {
+	position: absolute;
+	width: 150px;
+	height: 75px;
+	background-color: #6495ed;
+}
+
+.ellipse {
+	position: absolute;
+	width: 100px;
+	height: 50px;
+	border-radius: 100%;
+	background-color: #6495ed;
 }
